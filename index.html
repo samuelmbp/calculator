@@ -7,7 +7,34 @@
         <title>Calculator | Samuel Raducan</title>
     </head>
     <body>
-        <div id="app"></div>
+        <!-- 
+        1. Create a div that holds all the buttons and the input element
+          - the input element will display whatever number is pressed or the equation after 2 numbers are clicked 
+          - the buttons will be from 0 - 9 and the operators: / * - +
+          - additional buttons: clear (c), period (.), equal (=)
+       -->
+        <div class="calculator">
+            <input type="text" id="display" readonly />
+            <div class="buttons">
+                <button class="button">7</button>
+                <button class="button">8</button>
+                <button class="button">9</button>
+                <button class="button">/</button>
+                <button class="button">4</button>
+                <button class="button">5</button>
+                <button class="button">6</button>
+                <button class="button">*</button>
+                <button class="button">1</button>
+                <button class="button">2</button>
+                <button class="button">3</button>
+                <button class="button">-</button>
+                <button class="button">0</button>
+                <button class="button">.</button>
+                <button class="button">C</button>
+                <button class="button">+</button>
+                <button class="button">=</button>
+            </div>
+        </div>
         <script type="module" src="/src/main.ts"></script>
     </body>
 </html>

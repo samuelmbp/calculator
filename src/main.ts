@@ -21,6 +21,8 @@ buttons.forEach((button) => {
         if (!isNaN(parseFloat(buttonValue)) || buttonValue === ".") {
             // Update the display with the appropriate value or result
             calculatorDisplay.value += buttonValue;
+        } else if (buttonValue === "C") {
+            calculatorDisplay.value = "";
         }
     });
 });

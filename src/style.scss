@@ -13,25 +13,22 @@ body {
     height: 100vh;
 }
 
-.calculator__display {
-    padding: 12.5px 16px;
-    color: #f5f7fa;
-    font-size: 22px;
-    text-align: right;
-    // overflow: hidden;
-    background-color: #1f2933;
-    border: none;
-    outline: none;
-}
-
 .calculator {
-    // gap: 2px;
-    // margin: 0 auto;
-    text-align: center;
-    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
+    padding: 20px;
+
+    &__display {
+        padding: 22px 18px;
+        color: #f5f7fa;
+        font-size: 22px;
+        text-align: right;
+        background-color: #1f2933;
+        border: none;
+        outline: none;
+    }
 
     &__buttons {
         display: grid;

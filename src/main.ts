@@ -7,6 +7,10 @@ const buttons = document.querySelectorAll<HTMLButtonElement>(
     ".calculator__button"
 );
 
+let firstOperand: string = "";
+let secondOperand: string = "";
+let operator: string = "";
+
 if (!buttons || !calculatorDisplay) {
     throw new Error("Error while pressing a button.");
 }
@@ -17,12 +21,22 @@ buttons.forEach((button) => {
 
         if (!buttonValue) return;
 
-        // Check the type of button clicked (number, operator, clear, equal) and handle the action accordingly
         if (!isNaN(parseFloat(buttonValue)) || buttonValue === ".") {
-            // Update the display with the appropriate value or result
             calculatorDisplay.value += buttonValue;
         } else if (buttonValue === "C") {
             calculatorDisplay.value = "";
+            firstOperand = "";
+            secondOperand = "";
+            operator = "";
+        } else {
+            if (firstOperand === "") {
+                firstOperand = calculatorDisplay.value;
+                operator = buttonValue;
+                calculatorDisplay.value = "";
+            } else if (secondOperand === "") {
+                // Update the operator to the most recently clicked one
+                operator = buttonValue;
+            }
         }
     });
 });

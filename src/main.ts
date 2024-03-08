@@ -30,52 +30,11 @@ buttons.forEach((button) => {
             secondOperand = "";
             operator = "";
         } else if (buttonValue === "=") {
-            secondOperand = calculatorDisplay.value;
-            console.log(secondOperand);
-
-            console.log("Second operand", secondOperand);
-
-            let result: number = 0;
-
-            switch (operator) {
-                case "+":
-                    result =
-                        parseFloat(firstOperand) + parseFloat(secondOperand);
-                    break;
-                case "-":
-                    result =
-                        parseFloat(firstOperand) - parseFloat(secondOperand);
-                    break;
-                case "×":
-                    result =
-                        parseFloat(firstOperand) * parseFloat(secondOperand);
-                    break;
-                // TODO: Show the result with only 4-6 digits?
-                case "÷":
-                    result =
-                        parseFloat(firstOperand) / parseFloat(secondOperand);
-                    break;
-                case "%":
-                    result =
-                        parseFloat(firstOperand) % parseFloat(secondOperand);
-                    break;
-                default:
-                    break;
-            }
-
-            calculatorDisplay.value = result.toString();
-            // Reset operands and operator
-            firstOperand = "";
-            secondOperand = "";
-            operator = "";
+            calculate(firstOperand, secondOperand);
         } else {
             if (firstOperand === "") {
                 firstOperand = calculatorDisplay.value;
-                console.log("First operand: ", firstOperand);
-
                 operator = buttonValue;
-                console.log("Operator: ", operator);
-
                 calculatorDisplay.value = "";
             } else if (secondOperand === "") {
                 // Update the operator to the most recently clicked one
@@ -84,3 +43,36 @@ buttons.forEach((button) => {
         }
     });
 });
+
+const calculate = (firstOperand: string, secondOperand: string) => {
+    secondOperand = calculatorDisplay.value;
+    let result: number = 0;
+
+    switch (operator) {
+        case "+":
+            result = parseFloat(firstOperand) + parseFloat(secondOperand);
+            break;
+        case "-":
+            result = parseFloat(firstOperand) - parseFloat(secondOperand);
+            break;
+        case "×":
+            result = parseFloat(firstOperand) * parseFloat(secondOperand);
+            break;
+        // TODO: Show the result with only 4-6 digits?
+        case "÷":
+            result = parseFloat(firstOperand) / parseFloat(secondOperand);
+            break;
+        case "%":
+            result = parseFloat(firstOperand) % parseFloat(secondOperand);
+            break;
+        default:
+            break;
+    }
+
+    calculatorDisplay.value = result.toString();
+
+    // Reset operands and operator
+    firstOperand = "";
+    secondOperand = "";
+    operator = "";
+};

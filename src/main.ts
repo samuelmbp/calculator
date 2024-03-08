@@ -25,10 +25,7 @@ buttons.forEach((button) => {
         if (!isNaN(parseFloat(buttonValue)) || buttonValue === ".") {
             calculatorDisplay.value += buttonValue;
         } else if (buttonValue === "C") {
-            calculatorDisplay.value = "";
-            firstOperand = "";
-            secondOperand = "";
-            operator = "";
+            clearDisplay();
         } else if (buttonValue === "=") {
             calculate(firstOperand, secondOperand);
         } else {
@@ -43,6 +40,13 @@ buttons.forEach((button) => {
         }
     });
 });
+
+const clearDisplay = (): void => {
+    calculatorDisplay.value = "";
+    firstOperand = "";
+    secondOperand = "";
+    operator = "";
+};
 
 const calculate = (firstOperand: string, secondOperand: string) => {
     secondOperand = calculatorDisplay.value;

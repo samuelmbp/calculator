@@ -22,24 +22,32 @@ buttons.forEach((button) => {
 
         if (!buttonValue) return;
 
-        if (!isNaN(parseFloat(buttonValue)) || buttonValue === ".") {
+        if (isValidNumber(buttonValue) || buttonValue === ".") {
             calculatorDisplay.value += buttonValue;
         } else if (buttonValue === "C") {
             clearDisplay();
         } else if (buttonValue === "=") {
             calculate(firstOperand, secondOperand);
         } else {
-            if (firstOperand === "") {
-                firstOperand = calculatorDisplay.value;
-                operator = buttonValue;
-                calculatorDisplay.value = "";
-            } else if (secondOperand === "") {
-                // Update the operator to the most recently clicked one
-                operator = buttonValue;
-            }
+            handleOperator(buttonValue);
         }
     });
 });
+
+const isValidNumber = (value: string): boolean => {
+    return !isNaN(parseFloat(value)) && isFinite(parseFloat(value));
+};
+
+const handleOperator = (operatorSymbol: string): void => {
+    if (firstOperand === "") {
+        firstOperand = calculatorDisplay.value;
+        operator = operatorSymbol;
+        calculatorDisplay.value = "";
+    } else if (secondOperand === "") {
+        // Update the operator to the most recently clicked one
+        operator = operatorSymbol;
+    }
+};
 
 const clearDisplay = (): void => {
     calculatorDisplay.value = "";

@@ -7,6 +7,7 @@ const buttons = document.querySelectorAll<HTMLButtonElement>(
     ".calculator__button"
 );
 
+// TODO: Add these variables inside event listener (use params for the functions)
 let firstOperand: string = "";
 let secondOperand: string = "";
 let operator: string = "";
@@ -28,10 +29,53 @@ buttons.forEach((button) => {
             firstOperand = "";
             secondOperand = "";
             operator = "";
+        } else if (buttonValue === "=") {
+            secondOperand = calculatorDisplay.value;
+            console.log(secondOperand);
+
+            console.log("Second operand", secondOperand);
+
+            let result: number = 0;
+
+            switch (operator) {
+                case "+":
+                    result =
+                        parseFloat(firstOperand) + parseFloat(secondOperand);
+                    break;
+                case "-":
+                    result =
+                        parseFloat(firstOperand) - parseFloat(secondOperand);
+                    break;
+                case "×":
+                    result =
+                        parseFloat(firstOperand) * parseFloat(secondOperand);
+                    break;
+                // TODO: Show the result with only 4-6 digits?
+                case "÷":
+                    result =
+                        parseFloat(firstOperand) / parseFloat(secondOperand);
+                    break;
+                case "%":
+                    result =
+                        parseFloat(firstOperand) % parseFloat(secondOperand);
+                    break;
+                default:
+                    break;
+            }
+
+            calculatorDisplay.value = result.toString();
+            // Reset operands and operator
+            firstOperand = "";
+            secondOperand = "";
+            operator = "";
         } else {
             if (firstOperand === "") {
                 firstOperand = calculatorDisplay.value;
+                console.log("First operand: ", firstOperand);
+
                 operator = buttonValue;
+                console.log("Operator: ", operator);
+
                 calculatorDisplay.value = "";
             } else if (secondOperand === "") {
                 // Update the operator to the most recently clicked one

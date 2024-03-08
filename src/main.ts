@@ -22,65 +22,69 @@ buttons.forEach((button) => {
 
         if (!buttonValue) return;
 
-        if (!isNaN(parseFloat(buttonValue)) || buttonValue === ".") {
+        if (isValidNumber(buttonValue) || buttonValue === ".") {
             calculatorDisplay.value += buttonValue;
         } else if (buttonValue === "C") {
-            calculatorDisplay.value = "";
-            firstOperand = "";
-            secondOperand = "";
-            operator = "";
+            clearDisplay();
         } else if (buttonValue === "=") {
-            secondOperand = calculatorDisplay.value;
-            console.log(secondOperand);
-
-            console.log("Second operand", secondOperand);
-
-            let result: number = 0;
-
-            switch (operator) {
-                case "+":
-                    result =
-                        parseFloat(firstOperand) + parseFloat(secondOperand);
-                    break;
-                case "-":
-                    result =
-                        parseFloat(firstOperand) - parseFloat(secondOperand);
-                    break;
-                case "×":
-                    result =
-                        parseFloat(firstOperand) * parseFloat(secondOperand);
-                    break;
-                // TODO: Show the result with only 4-6 digits?
-                case "÷":
-                    result =
-                        parseFloat(firstOperand) / parseFloat(secondOperand);
-                    break;
-                case "%":
-                    result =
-                        parseFloat(firstOperand) % parseFloat(secondOperand);
-                    break;
-                default:
-                    break;
-            }
-
-            calculatorDisplay.value = result.toString();
-            // Reset operands and operator
-            firstOperand = "";
-            secondOperand = "";
-            operator = "";
+            calculate(firstOperand, secondOperand);
         } else {
-            if (firstOperand === "") {
-                firstOperand = calculatorDisplay.value;
-                console.log("First operand: ", firstOperand);
-
-                operator = buttonValue;
-                console.log("Operator: ", operator);
-
-                calculatorDisplay.value = "";
-            } else if (secondOperand === "") {
-                // Update the operator to the most recently clicked one
-                operator = buttonValue;
-            }
+            handleOperator(buttonValue);
         }
     });
 });
+
+const isValidNumber = (value: string): boolean => {
+    return !isNaN(parseFloat(value)) && isFinite(parseFloat(value));
+};
+
+const handleOperator = (operatorSymbol: string): void => {
+    if (firstOperand === "") {
+        firstOperand = calculatorDisplay.value;
+        operator = operatorSymbol;
+        calculatorDisplay.value = "";
+    } else if (secondOperand === "") {
+        // Update the operator to the most recently clicked one
+        operator = operatorSymbol;
+    }
+};
+
+const clearDisplay = (): void => {
+    calculatorDisplay.value = "";
+    firstOperand = "";
+    secondOperand = "";
+    operator = "";
+};
+
+const calculate = (firstOperand: string, secondOperand: string) => {
+    secondOperand = calculatorDisplay.value;
+    let result: number = 0;
+
+    switch (operator) {
+        case "+":
+            result = parseFloat(firstOperand) + parseFloat(secondOperand);
+            break;
+        case "-":
+            result = parseFloat(firstOperand) - parseFloat(secondOperand);
+            break;
+        case "×":
+            result = parseFloat(firstOperand) * parseFloat(secondOperand);
+            break;
+        // TODO: Show the result with only 4-6 digits?
+        case "÷":
+            result = parseFloat(firstOperand) / parseFloat(secondOperand);
+            break;
+        case "%":
+            result = parseFloat(firstOperand) % parseFloat(secondOperand);
+            break;
+        default:
+            break;
+    }
+
+    calculatorDisplay.value = result.toString();
+
+    // Reset operands and operator
+    firstOperand = "";
+    secondOperand = "";
+    operator = "";
+};

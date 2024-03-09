@@ -35,7 +35,7 @@ calculatorButtons.addEventListener("click", (event: Event) => {
     }
 
     if (buttonType === "decimal") {
-        console.log("Pressed decimal");
+        calculatorDisplay.textContent = result + ".";
     }
 
     if (buttonType === "operator") {

@@ -5,12 +5,14 @@ const calculator = document.querySelector<HTMLDivElement>(".calculator");
 
 if (!calculator) throw new Error("Error while accessing the calculator...");
 
+const calculatorDisplay = calculator.querySelector<HTMLDivElement>(
+    ".calculator__display"
+);
 const calculatorButtons = calculator.querySelector<HTMLDivElement>(
     ".calculator__buttons"
-    );
+);
 
-// TODO: Handle null error for buttons and display
-if (!calculatorButtons)
+if (!calculatorButtons || !calculatorDisplay)
     throw new Error("Error while trying to press on the buttons..");
 
 calculatorButtons.addEventListener("click", (event: Event) => {
@@ -20,9 +22,16 @@ calculatorButtons.addEventListener("click", (event: Event) => {
 
     const button = event.target as HTMLElement;
     const buttonType: string | undefined = button.dataset.buttonType;
+    const key: string | undefined = button.dataset.key;
+    const result = calculatorDisplay.textContent;
 
-    if (buttonType === "number") {
-        console.log("Pressed number");
+    if (buttonType === "number" && key) {
+        if (result === "0") {
+            calculatorDisplay.textContent = key;
+        } else {
+            // Append the number to the displayed result.
+            calculatorDisplay.textContent = result + key;
+        }
     }
 
     if (buttonType === "decimal") {

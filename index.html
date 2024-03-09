@@ -12,27 +12,117 @@
     </head>
     <body>
         <div class="calculator">
-            <input type="text" class="calculator__display" placeholder="0" />
+            <div class="calculator__display">0</div>
+
             <div class="calculator__buttons">
-                <button class="calculator__button clear">C</button>
-                <button class="calculator__button minus-plus">&#177;</button>
-                <button class="calculator__button modulo">&#37;</button>
-                <button class="calculator__button divide">÷</button>
-                <button class="calculator__button">7</button>
-                <button class="calculator__button">8</button>
-                <button class="calculator__button">9</button>
-                <button class="calculator__button times">&times;</button>
-                <button class="calculator__button">4</button>
-                <button class="calculator__button">5</button>
-                <button class="calculator__button">6</button>
-                <button class="calculator__button minus">-</button>
-                <button class="calculator__button">1</button>
-                <button class="calculator__button">2</button>
-                <button class="calculator__button">3</button>
-                <button class="calculator__button plus">&plus;</button>
-                <button class="calculator__button flex__two">0</button>
-                <button class="calculator__button">&#46;</button>
-                <button class="calculator__button equal">=</button>
+                <button
+                    class="calculator__button plus"
+                    data-button-type="operator"
+                >
+                    +
+                </button>
+                <button
+                    class="calculator__button minus"
+                    data-button-type="operator"
+                >
+                    -
+                </button>
+                <button
+                    class="calculator__button times"
+                    data-button-type="operator"
+                >
+                    &times;
+                </button>
+                <button
+                    class="calculator__button divide"
+                    data-button-type="operator"
+                >
+                    ÷
+                </button>
+                <button
+                    class="calculator__button modulo"
+                    data-button-type="operator"
+                >
+                    %
+                </button>
+                <button
+                    class="calculator__button one"
+                    data-button-type="number"
+                >
+                    1
+                </button>
+                <button
+                    class="calculator__button two"
+                    data-button-type="number"
+                >
+                    2
+                </button>
+                <button
+                    class="calculator__button three"
+                    data-button-type="number"
+                >
+                    3
+                </button>
+                <button
+                    class="calculator__button four"
+                    data-button-type="number"
+                >
+                    4
+                </button>
+                <button
+                    class="calculator__button five"
+                    data-button-type="number"
+                >
+                    5
+                </button>
+                <button
+                    class="calculator__button six"
+                    data-button-type="number"
+                >
+                    6
+                </button>
+                <button
+                    class="calculator__button seven"
+                    data-button-type="number"
+                >
+                    7
+                </button>
+                <button
+                    class="calculator__button eight"
+                    data-button-type="number"
+                >
+                    8
+                </button>
+                <button
+                    class="calculator__button nine"
+                    data-button-type="number"
+                >
+                    9
+                </button>
+                <button
+                    class="calculator__button zero"
+                    data-button-type="number"
+                >
+                    0
+                </button>
+                <button
+                    class="calculator__button decimal"
+                    data-button-type="decimal"
+                >
+                    .
+                </button>
+                <button
+                    class="calculator__button clear"
+                    data-button-type="clear"
+                >
+                    AC
+                </button>
+                <button
+                    class="calculator__button equal"
+                    data-button-type="equal"
+                >
+                    =
+                </button>
             </div>
         </div>
         <script type="module" src="/src/main.ts"></script>

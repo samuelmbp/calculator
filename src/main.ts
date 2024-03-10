@@ -24,7 +24,7 @@ calculatorButtons.addEventListener("click", (event: Event) => {
     const buttonType: string | undefined = button.dataset.buttonType;
     const key: string | undefined = button.dataset.key;
     const previousButtonType = calculator.dataset.previousButtonType;
-    const result = calculatorDisplay.textContent;
+    const result = calculatorDisplay.textContent ?? undefined;
 
     // Release operator pressed state
     const operatorButtons = [calculatorButtons.children].filter((button) => {
@@ -57,10 +57,30 @@ calculatorButtons.addEventListener("click", (event: Event) => {
 
     if (buttonType === "operator") {
         button.classList.add("is-pressed");
+        calculator.dataset.firstValue = result;
+        calculator.dataset.operator = button.dataset.key;
     }
 
     if (buttonType === "equal") {
-        console.log("Pressed equal");
+        const firstValue = calculator.dataset.firstValue;
+        const operator = calculator.dataset.operator;
+        const secondValue = result;
+
+        if (!firstValue || !secondValue) return;
+
+        let newResult = 0;
+        if (operator === "plus")
+            newResult = parseFloat(firstValue) + parseFloat(secondValue);
+        if (operator === "minus")
+            newResult = parseFloat(firstValue) - parseFloat(secondValue);
+        if (operator === "times")
+            newResult = parseFloat(firstValue) * parseFloat(secondValue);
+        if (operator === "divide")
+            newResult = parseFloat(firstValue) / parseFloat(secondValue);
+        if (operator === "modulo")
+            newResult = parseFloat(firstValue) % parseFloat(secondValue);
+
+        calculatorDisplay.textContent = newResult.toString();
     }
 
     if (buttonType === "clear") {

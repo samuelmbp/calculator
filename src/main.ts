@@ -68,21 +68,10 @@ calculatorButtons.addEventListener("click", (event: Event) => {
         const operator = calculator.dataset.operator;
         const secondValue = result;
 
-        if (!firstValue || !secondValue) return;
-
-        let newResult = 0;
-        if (operator === "plus")
-            newResult = parseFloat(firstValue) + parseFloat(secondValue);
-        if (operator === "minus")
-            newResult = parseFloat(firstValue) - parseFloat(secondValue);
-        if (operator === "times")
-            newResult = parseFloat(firstValue) * parseFloat(secondValue);
-        if (operator === "divide")
-            newResult = parseFloat(firstValue) / parseFloat(secondValue);
-        if (operator === "modulo")
-            newResult = parseFloat(firstValue) % parseFloat(secondValue);
-
-        calculatorDisplay.textContent = newResult.toString();
+        if (firstValue && operator && secondValue) {
+            const newResult = calculate(firstValue, operator, secondValue);
+            calculatorDisplay.textContent = newResult.toString();
+        }
     }
 
     if (buttonType === "clear") {
@@ -105,3 +94,18 @@ calculatorButtons.addEventListener("click", (event: Event) => {
 
     calculator.dataset.previousButtonType = buttonType;
 });
+
+const calculate = (firstValue: string, operator: string,secondValue: string) => {
+    if (operator === "plus")
+        return parseFloat(firstValue) + parseFloat(secondValue);
+    if (operator === "minus")
+        return parseFloat(firstValue) - parseFloat(secondValue);
+    if (operator === "times")
+        return parseFloat(firstValue) * parseFloat(secondValue);
+    if (operator === "divide")
+        return parseFloat(firstValue) / parseFloat(secondValue);
+    if (operator === "modulo")
+        return parseFloat(firstValue) % parseFloat(secondValue);
+
+    throw new Error("Invalid operator");
+};

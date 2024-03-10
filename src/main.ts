@@ -24,7 +24,7 @@ calculatorButtons.addEventListener("click", (event: Event) => {
     const buttonType: string | undefined = button.dataset.buttonType;
     const key: string | undefined = button.dataset.key;
     const previousButtonType = calculator.dataset.previousButtonType;
-    const result = calculatorDisplay.textContent ?? undefined;
+    const displayValue = calculatorDisplay.textContent ?? undefined;
 
     // Release operator pressed state
     const operatorButtons = [calculatorButtons.children].filter((button) => {
@@ -39,10 +39,10 @@ calculatorButtons.addEventListener("click", (event: Event) => {
     });
 
     if (buttonType === "number" && key) {
-        if (result === "0") {
+        if (displayValue === "0") {
             calculatorDisplay.textContent = key;
         } else {
-            calculatorDisplay.textContent = result + key;
+            calculatorDisplay.textContent = displayValue + key;
         }
 
         // When previous action is an operator, show the clicked number.
@@ -52,37 +52,36 @@ calculatorButtons.addEventListener("click", (event: Event) => {
     }
 
     if (buttonType === "decimal") {
-        if (result !== undefined && !result.includes(".")) {
-            calculatorDisplay.textContent = result + ".";
+        if (displayValue !== undefined && !displayValue.includes(".")) {
+            calculatorDisplay.textContent = displayValue + ".";
         }
     }
 
     if (buttonType === "operator") {
         button.classList.add("is-pressed");
-        calculator.dataset.firstValue = result;
+        calculator.dataset.firstValue = displayValue;
         calculator.dataset.operator = button.dataset.key;
     }
 
     if (buttonType === "equal") {
         const firstValue = calculator.dataset.firstValue;
         const operator = calculator.dataset.operator;
-        const secondValue = result;
+        const secondValue = displayValue;
 
         if (firstValue && operator && secondValue) {
-            const newResult = calculate(firstValue, operator, secondValue);
-            calculatorDisplay.textContent = newResult.toString();
+            const result = calculate(firstValue, operator, secondValue);
+            calculatorDisplay.textContent = result.toString();
         }
     }
 
     if (buttonType === "clear") {
+        calculatorDisplay.textContent = "0";
+        button.textContent = "AC";
         if (button.textContent === "AC") {
             // Remove any values saved on calculator
             delete calculator.dataset.firstValue;
             delete calculator.dataset.operator;
         }
-
-        calculatorDisplay.textContent = "0";
-        button.textContent = "AC";
     }
 
     if (buttonType !== "clear") {
@@ -95,7 +94,11 @@ calculatorButtons.addEventListener("click", (event: Event) => {
     calculator.dataset.previousButtonType = buttonType;
 });
 
-const calculate = (firstValue: string, operator: string,secondValue: string) => {
+const calculate = (
+    firstValue: string,
+    operator: string,
+    secondValue: string
+) => {
     if (operator === "plus")
         return parseFloat(firstValue) + parseFloat(secondValue);
     if (operator === "minus")

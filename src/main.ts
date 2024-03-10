@@ -52,7 +52,9 @@ calculatorButtons.addEventListener("click", (event: Event) => {
     }
 
     if (buttonType === "decimal") {
-        calculatorDisplay.textContent = result + ".";
+        if (result !== undefined && !result.includes(".")) {
+            calculatorDisplay.textContent = result + ".";
+        }
     }
 
     if (buttonType === "operator") {

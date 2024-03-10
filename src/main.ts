@@ -84,7 +84,21 @@ calculatorButtons.addEventListener("click", (event: Event) => {
     }
 
     if (buttonType === "clear") {
-        console.log("Pressed clear");
+        if (button.textContent === "AC") {
+            // Remove any values saved on calculator
+            delete calculator.dataset.firstValue;
+            delete calculator.dataset.operator;
+        }
+
+        calculatorDisplay.textContent = "0";
+        button.textContent = "AC";
+    }
+
+    if (buttonType !== "clear") {
+        const clearButton = calculator.querySelector(".clear");
+        if (!clearButton) return;
+
+        clearButton.textContent = "CE";
     }
 
     calculator.dataset.previousButtonType = buttonType;

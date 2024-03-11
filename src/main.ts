@@ -16,23 +16,21 @@ if (!calculatorButtons || !calculatorDisplay)
     throw new Error("Error while trying to press on the buttons..");
 
 calculatorButtons.addEventListener("click", (event: Event) => {
-    // Returns closest ancestor of the current element or the element itself
-    const target = event.target as Element;
+    const target = event.target as HTMLElement;
     if (!target.closest("button")) return;
 
-    const button = event.target as HTMLElement;
-    const buttonType: string | undefined = button.dataset.buttonType;
-    const key: string | undefined = button.dataset.key;
+    const buttonType = target.dataset.buttonType;
+    const key = target.dataset.key;
     const previousButtonType = calculator.dataset.previousButtonType;
     const displayValue = calculatorDisplay.textContent ?? undefined;
 
-    // Release operator pressed state
     const operatorButtons = [calculatorButtons.children].filter((button) => {
-        // Ensures it is HTMLElement
+        // Ensures it is a HTMLElement
         if (!(button instanceof HTMLElement)) return false;
         button.dataset.buttonType === "operator";
     });
 
+    // Release operator pressed state
     operatorButtons.forEach((button) => {
         if (!(button instanceof HTMLElement)) return false;
         button.classList.remove("is-pressed");
@@ -58,9 +56,9 @@ calculatorButtons.addEventListener("click", (event: Event) => {
     }
 
     if (buttonType === "operator") {
-        button.classList.add("is-pressed");
+        target.classList.add("is-pressed");
         calculator.dataset.firstValue = displayValue;
-        calculator.dataset.operator = button.dataset.key;
+        calculator.dataset.operator = target.dataset.key;
     }
 
     if (buttonType === "equal") {
@@ -76,9 +74,8 @@ calculatorButtons.addEventListener("click", (event: Event) => {
 
     if (buttonType === "clear") {
         calculatorDisplay.textContent = "0";
-        button.textContent = "AC";
-        if (button.textContent === "AC") {
-            // Remove any values saved on calculator
+        target.textContent = "AC";
+        if (target.textContent === "AC") {
             delete calculator.dataset.firstValue;
             delete calculator.dataset.operator;
         }

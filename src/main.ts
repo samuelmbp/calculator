@@ -16,76 +16,35 @@ if (!calculatorButtons || !calculatorDisplay)
     throw new Error("Error while trying to press on the buttons..");
 
 calculatorButtons.addEventListener("click", (event: Event) => {
-    const target = event.target as HTMLElement;
-    if (!target.closest("button")) return;
+    const button = event.target as HTMLElement;
+    if (!button.closest("button")) return;
 
-    const buttonType = target.dataset.buttonType;
-    const key = target.dataset.key;
-    const previousButtonType = calculator.dataset.previousButtonType;
+    const { buttonType } = button.dataset;
     const displayValue = calculatorDisplay.textContent ?? undefined;
 
+    // Release operator pressed state
     const operatorButtons = [calculatorButtons.children].filter((button) => {
-        // Ensures it is a HTMLElement
         if (!(button instanceof HTMLElement)) return false;
         button.dataset.buttonType === "operator";
     });
 
-    // Release operator pressed state
     operatorButtons.forEach((button) => {
         if (!(button instanceof HTMLElement)) return false;
         button.classList.remove("is-pressed");
     });
 
-    if (buttonType === "number" && key) {
-        if (displayValue === "0") {
-            calculatorDisplay.textContent = key;
-        } else {
-            calculatorDisplay.textContent = displayValue + key;
-        }
-
-        // When previous action is an operator, show the clicked number.
-        if (previousButtonType === "operator") {
-            calculatorDisplay.textContent = key;
-        }
-    }
-
-    if (buttonType === "decimal") {
-        if (displayValue !== undefined && !displayValue.includes(".")) {
-            calculatorDisplay.textContent = displayValue + ".";
-        }
-    }
-
-    if (buttonType === "operator") {
-        target.classList.add("is-pressed");
-        calculator.dataset.firstValue = displayValue;
-        calculator.dataset.operator = target.dataset.key;
-    }
-
-    if (buttonType === "equal") {
-        const firstValue = calculator.dataset.firstValue;
-        const operator = calculator.dataset.operator;
-        const secondValue = displayValue;
-
-        if (firstValue && operator && secondValue) {
-            const result = calculate(firstValue, operator, secondValue);
-            calculatorDisplay.textContent = result.toString();
-        }
-    }
-
-    if (buttonType === "clear") {
-        calculatorDisplay.textContent = "0";
-        target.textContent = "AC";
-        if (target.textContent === "AC") {
-            delete calculator.dataset.firstValue;
-            delete calculator.dataset.operator;
-        }
-    }
-
     if (buttonType !== "clear") {
         const clearButton = calculator.querySelector(".clear");
         if (!clearButton) return;
-
         clearButton.textContent = "CE";
+    }
+
+    switch (buttonType) {
+        case "clear": handleClearButton(calculator, button);break
+        case "number": handleNumberButtons(calculator, button, calculatorDisplay);break
+        case "decimal": handleDecimalButton(calculatorDisplay);break
+        case "operator": handleOperatorButton(calculator, button, displayValue);break
+        case "equal":handleEqual(calculator, displayValue, calculatorDisplay);break
     }
 
     calculator.dataset.previousButtonType = buttonType;
@@ -108,4 +67,60 @@ const calculate = (
         return parseFloat(firstValue) % parseFloat(secondValue);
 
     throw new Error("Invalid operator");
+};
+
+const handleClearButton = (calculator: HTMLDivElement, button: HTMLElement) => {
+    calculatorDisplay.textContent = "0";
+    button.textContent = "AC";
+    // Deletes data attributes.
+    delete calculator.dataset.firstValue;
+    delete calculator.dataset.operator;
+};
+
+const handleNumberButtons = (
+    calculator: HTMLDivElement,
+    button: HTMLElement,
+    display: HTMLDivElement
+) => {
+    const { previousButtonType } = calculator.dataset;
+    const { key } = button.dataset;
+    const displayValue = display.textContent ?? "";
+
+    if (displayValue === "0" && key) display.textContent = key;
+    else display.textContent = displayValue + key;
+
+    if (previousButtonType === "operator" && key) display.textContent = key;
+};
+
+const handleDecimalButton = (display: HTMLDivElement) => {
+    const displayValue = display.textContent ?? "";
+
+    if (displayValue !== undefined && !displayValue.includes(".")) {
+        display.textContent = displayValue + ".";
+    }
+};
+
+const handleOperatorButton = (
+    calculator: HTMLDivElement,
+    button: HTMLElement,
+    displayValue: string | undefined
+) => {
+    button.classList.add("is-pressed");
+    calculator.dataset.firstValue = displayValue;
+    calculator.dataset.operator = button.dataset.key;
+};
+
+const handleEqual = (
+    calculator: HTMLDivElement,
+    displayValue: string | undefined,
+    display: HTMLDivElement
+) => {
+    const firstValue = calculator.dataset.firstValue;
+    const operator = calculator.dataset.operator;
+    const secondValue = displayValue;
+
+    if (firstValue && operator && secondValue) {
+        const result = calculate(firstValue, operator, secondValue);
+        display.textContent = result.toString();
+    }
 };

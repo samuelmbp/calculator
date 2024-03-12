@@ -1,90 +1,65 @@
 import "./style.scss";
+import { handleNumberButtons } from "./functions/handleNumberButtons";
+import { handleDecimalButton } from "./functions/handleDecimalButton";
+import { handleOperatorButton } from "./functions/handleOperatorButton";
+import { handleEqual } from "./functions/handleEqual";
+import { handleClearButton } from "./functions/handleClearButton";
 
-const calculatorDisplay = document.querySelector<HTMLInputElement>(
+// Event delegation pattern to listen to every key.
+const calculator = document.querySelector<HTMLDivElement>(".calculator");
+if (!calculator) throw new Error("Error while accessing the calculator...");
+
+const calculatorDisplay = calculator.querySelector<HTMLDivElement>(
     ".calculator__display"
 );
-const buttons = document.querySelectorAll<HTMLButtonElement>(
-    ".calculator__button"
+const calculatorButtons = calculator.querySelector<HTMLDivElement>(
+    ".calculator__buttons"
 );
 
-// TODO: Add these variables inside event listener (use params for the functions)
-let firstOperand: string = "";
-let secondOperand: string = "";
-let operator: string = "";
+if (!calculatorButtons || !calculatorDisplay)
+    throw new Error("Error while trying to press on the buttons..");
 
-if (!buttons || !calculatorDisplay) {
-    throw new Error("Error while pressing a button.");
-}
+calculatorButtons.addEventListener("click", (event: Event) => {
+    const button = event.target as HTMLElement;
+    if (!button.closest("button")) return;
 
-buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-        const buttonValue: string | null = button.textContent;
+    const { buttonType } = button.dataset;
+    const displayValue = calculatorDisplay.textContent ?? undefined;
 
-        if (!buttonValue) return;
-
-        if (isValidNumber(buttonValue) || buttonValue === ".") {
-            calculatorDisplay.value += buttonValue;
-        } else if (buttonValue === "C") {
-            clearDisplay();
-        } else if (buttonValue === "=") {
-            calculate(firstOperand, secondOperand);
-        } else {
-            handleOperator(buttonValue);
-        }
+    // Release operator pressed state
+    const operatorButtons = [calculatorButtons.children].filter((button) => {
+        if (!(button instanceof HTMLElement)) return false;
+        button.dataset.buttonType === "operator";
     });
+
+    operatorButtons.forEach((button) => {
+        if (!(button instanceof HTMLElement)) return false;
+        button.classList.remove("is-pressed");
+    });
+
+    if (buttonType !== "clear") {
+        const clearButton = calculator.querySelector(".clear");
+        if (!clearButton) return;
+        clearButton.textContent = "CE";
+    }
+
+    switch (buttonType) {
+        case "clear":
+            handleClearButton(calculatorDisplay, calculator, button);
+            break;
+        case "number":
+            handleNumberButtons(calculator, button, calculatorDisplay);
+            break;
+        case "decimal":
+            handleDecimalButton(calculatorDisplay);
+            break;
+        case "operator":
+            handleOperatorButton(calculator, button, displayValue);
+            break;
+        case "equal":
+            handleEqual(calculator, displayValue, calculatorDisplay);
+            break;
+    }
+
+    calculator.dataset.previousButtonType = buttonType;
 });
-
-const isValidNumber = (value: string): boolean => {
-    return !isNaN(parseFloat(value)) && isFinite(parseFloat(value));
-};
-
-const handleOperator = (operatorSymbol: string): void => {
-    if (firstOperand === "") {
-        firstOperand = calculatorDisplay.value;
-        operator = operatorSymbol;
-        calculatorDisplay.value = "";
-    } else if (secondOperand === "") {
-        // Update the operator to the most recently clicked one
-        operator = operatorSymbol;
-    }
-};
-
-const clearDisplay = (): void => {
-    calculatorDisplay.value = "";
-    firstOperand = "";
-    secondOperand = "";
-    operator = "";
-};
-
-const calculate = (firstOperand: string, secondOperand: string) => {
-    secondOperand = calculatorDisplay.value;
-    let result: number = 0;
-
-    switch (operator) {
-        case "+":
-            result = parseFloat(firstOperand) + parseFloat(secondOperand);
-            break;
-        case "-":
-            result = parseFloat(firstOperand) - parseFloat(secondOperand);
-            break;
-        case "×":
-            result = parseFloat(firstOperand) * parseFloat(secondOperand);
-            break;
-        // TODO: Show the result with only 4-6 digits?
-        case "÷":
-            result = parseFloat(firstOperand) / parseFloat(secondOperand);
-            break;
-        case "%":
-            result = parseFloat(firstOperand) % parseFloat(secondOperand);
-            break;
-        default:
-            break;
-    }
-
-    calculatorDisplay.value = result.toString();
-
-    // Reset operands and operator
-    firstOperand = "";
-    secondOperand = "";
-    operator = "";
-};

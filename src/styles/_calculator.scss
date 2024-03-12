@@ -1,0 +1,119 @@
+@use "./variables" as *;
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap");
+
+.calculator {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.3);
+
+    .is-pressed:focus {
+        background-color: $button-focus-color;
+    }
+
+    &__display {
+        font-family: "Orbitron", sans-serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+        width: 240px;
+        padding: 26px 18px;
+        background-color: $display-color;
+        color: $light-text-color;
+        font-size: 26px;
+        text-align: right;
+        border: none;
+    }
+
+    &__buttons {
+        display: grid;
+        grid-gap: 2px;
+        grid-template-columns: repeat(4, auto);
+        background-color: $button-bg-color;
+        grid-template-areas:
+            ". . . ."
+            "seven eight nine modulus"
+            "four five six equal"
+            "one two three equal"
+            "zero decimal clear equal";
+
+        .calculator__button {
+            position: relative;
+            font-size: 22px;
+            width: inherit;
+            min-height: 80px;
+            border: 0;
+            background: $light-text-color;
+        }
+
+        .zero {
+            grid-area: zero;
+        }
+
+        .one {
+            grid-area: one;
+        }
+        .two {
+            grid-area: two;
+        }
+        .three {
+            grid-area: three;
+        }
+        .four {
+            grid-area: four;
+        }
+        .five {
+            grid-area: five;
+        }
+        .six {
+            grid-area: six;
+        }
+        .seven {
+            grid-area: seven;
+        }
+        .eight {
+            grid-area: eight;
+        }
+
+        .nine {
+            grid-area: nine;
+        }
+
+        .decimal {
+            grid-area: decimal;
+        }
+
+        .clear {
+            grid-area: clear;
+        }
+        .equal {
+            grid-area: equal;
+            background-color: $bright-yellow;
+        }
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .calculator {
+        &__display {
+            width: 350px;
+        }
+
+        .calculator__button {
+            font-size: 22px;
+            width: inherit;
+        }
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .calculator {
+        &__display {
+            padding: 45px 20px;
+            width: 400px;
+        }
+
+        .calculator__button {
+            width: inherit;
+        }
+    }
+}

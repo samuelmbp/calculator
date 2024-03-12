@@ -4,6 +4,7 @@ import { handleDecimalButton } from "./functions/handleDecimalButton";
 import { handleOperatorButton } from "./functions/handleOperatorButton";
 import { handleEqual } from "./functions/handleEqual";
 import { handleClearButton } from "./functions/handleClearButton";
+import { handleDeleteButton } from "./functions/handleDeleteButton";
 
 // Event delegation pattern to listen to every key.
 const calculator = document.querySelector<HTMLDivElement>(".calculator");
@@ -58,6 +59,9 @@ calculatorButtons.addEventListener("click", (event: Event) => {
             break;
         case "equal":
             handleEqual(calculator, displayValue, calculatorDisplay);
+            break;
+        case "delete":
+            handleDeleteButton(calculatorDisplay);
             break;
     }
 

@@ -14,6 +14,7 @@ This calculator app allows users to perform basic arithmetic operations such as 
 -   Division (/)
 -   Modulo (%)
 -   Decimal point input (.)
+-   Deleting the last digit (DEL)
 -   Clearing the display (CE)
 
 ## Installation

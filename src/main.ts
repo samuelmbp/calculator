@@ -27,17 +27,6 @@ calculatorButtons.addEventListener("click", (event: Event) => {
     const { buttonType } = button.dataset;
     const displayValue = calculatorDisplay.textContent ?? undefined;
 
-    // Release operator pressed state
-    const operatorButtons = [calculatorButtons.children].filter((button) => {
-        if (!(button instanceof HTMLElement)) return false;
-        button.dataset.buttonType === "operator";
-    });
-
-    operatorButtons.forEach((button) => {
-        if (!(button instanceof HTMLElement)) return false;
-        button.classList.remove("is-pressed");
-    });
-
     if (buttonType !== "clear") {
         const clearButton = calculator.querySelector(".clear");
         if (!clearButton) return;
@@ -55,7 +44,12 @@ calculatorButtons.addEventListener("click", (event: Event) => {
             handleDecimalButton(calculatorDisplay);
             break;
         case "operator":
-            handleOperatorButton(calculator, button, displayValue);
+            handleOperatorButton(
+                calculatorButtons,
+                calculator,
+                button,
+                displayValue
+            );
             break;
         case "equal":
             handleEqual(calculator, displayValue, calculatorDisplay);

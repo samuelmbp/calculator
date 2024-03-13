@@ -39,7 +39,7 @@
         .calculator__button {
             position: relative;
             font-size: 22px;
-            width: inherit;
+            width: 68px;
             min-height: 80px;
             border: 0;
             background: $light-text-color;
@@ -95,25 +95,12 @@
 @media screen and (min-width: 768px) {
     .calculator {
         &__display {
-            width: 350px;
-        }
-
-        .calculator__button {
-            font-size: 22px;
-            width: inherit;
-        }
-    }
-}
-
-@media screen and (min-width: 1024px) {
-    .calculator {
-        &__display {
             padding: 45px 20px;
-            width: 400px;
+            width: 480px;
         }
 
         .calculator__button {
-            width: inherit;
+            width: 128px;
         }
     }
 }
